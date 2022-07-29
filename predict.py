@@ -7,6 +7,7 @@ clone the following repo if haven't
 import sys
 import tempfile
 import warnings
+import urllib2 as url
 import numpy as np
 from pathlib import Path
 import argparse
@@ -143,7 +144,7 @@ class Predictor(cog.Predictor):
             self.args.init_image = str(image)
             self.args.step_size = 0.25
             if "http" in self.args.init_image:
-                img = Image.open(urlopen(self.args.init_image))
+                img = Image.open(url.urlopen(self.args.init_image))
             else:
                 img = Image.open(self.args.init_image)
             pil_image = img.convert("RGB")
@@ -669,7 +670,7 @@ def ascend_txt(i, z, perceptor, args, model, make_cutouts, pMs):
     if args.init_weight:
         # result.append(F.mse_loss(z, z_orig) * args.init_weight / 2)
         result.append(
-            F.mse_loss(z, torch.zeros_like(z_orig))
+            F.mse_loss(z, torch.zeros_like(z.clone()))
             * ((1 / torch.tensor(i * 2 + 1)) * args.init_weight)
             / 2
         )
