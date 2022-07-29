@@ -1,9 +1,9 @@
 # vqgarm - VQGAN+CLIP for Process Architecture Testing
 
 ![Example Image](https://korii.slate.fr/sites/default/files/styles/1440x600/public/champdechienselectriques.jpg)
-
-![Run Test](https://github.com/LibreCS/vqgarm/actions/workflows/running.yml/badge.svg) ![Build Test](https://github.com/LibreCS/vqgarm/actions/workflows/test.yml/badge.svg) ![Dependancies Test](https://github.com/LibreCS/vqgarm/actions/workflows/requirements.yml/badge.svg)
-
+---
+![Run Test](https://github.com/LibreCS/vqgarm/actions/workflows/running.yml/badge.svg) ![Build Test](https://github.com/LibreCS/vqgarm/actions/workflows/test.yml/badge.svg) ![Dependancies Test](https://github.com/LibreCS/vqgarm/actions/workflows/requirements.yml/badge.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/LibreCS/vqgarm) ![GitHub](https://img.shields.io/github/license/LibreCS/vqgarm)
+---
 A repo for running VQGAN+CLIP locally. This started out as a Katherine Crowson VQGAN+CLIP derived Google colab notebook, and further derived from a project to run the notebook locally using Anaconda for Python found [in this repository](https://github.com/nerdyrodent/VQGAN-CLIP)
 
 This project aims to provide compatibility for arm64-based systems and allow for testing of maching learning workloads across processor architectures.
