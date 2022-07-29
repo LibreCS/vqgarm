@@ -1,4 +1,4 @@
-# VQGAN-CLIP Implementation for Process Architecture Testing
+# vqgarm - VQGAN+CLIP for Process Architecture Testing
 
 ![Example Image](https://korii.slate.fr/sites/default/files/styles/1440x600/public/champdechienselectriques.jpg)
 
@@ -11,7 +11,7 @@ This project aims to provide compatibility for arm64-based systems and allow for
 ---
 ## Hardware and OS Requirements
 
-This project is only tested on an AMD-based x86-64 system (should not differ for Intel processors) and a Raspberry Pi 3B+. With more interest, it may be tested for Apple Silicon-based systems.
+This project is only tested on an AMD-based x86-64 system (should not differ for Intel processors) and a Raspberry Pi 3B+. For simplicity, it will be tested in an arm64 docker container running on an Apple M1 Pro.
 
 64-bit installations of your distro of choice (only tested on Ubuntu 20.04 LTS) are required for this project to run smoothly. Due to lack of development of certain dependancies namely conda and pytorch for armhf and other 32-bit OS's, the project is limited to 64-bit systems (or not, if you are willing and able to get the problematic dependancies installed)
 
@@ -20,11 +20,12 @@ This project is only tested on an AMD-based x86-64 system (should not differ for
 
 The project can be installed and run normally, and for testing purposes Ubuntu 20.04 LTS will be used to provide consistancy. Installation instructions can be found in the [original project repository](https://github.com/nerdyrodent/VQGAN-CLIP)
 
+---
 ## For arm64 Processors
 
-Note: This project still remains untested on arm64 architectures, and testing is in progress to provide full compatibility.
+Ubuntu 20.04 or 22.04 for arm64 is recommended to provide maximum compatibility, and testing for arm64 compatibility will only be done with the Raspberry Pi model 3B+. 
 
-Ubuntu 20.04 for arm64 is recommended to provide maximum compatibility, and testing for arm64 compatibility will only be done with the Raspberry Pi model 3B+. Future revisions may include tests done on Apple Silicon-based processors.
+This project's CI testing schema also tests for Windows 10 and macOS compatibility, so they are also theoretically functional.
 
 ### Anaconda for arm64
 
@@ -63,6 +64,20 @@ pip install --pre torch torchvision torchaudio -f https://download.pytorch.org/w
 ```
 ---
 ## VQGAN Models
+
+### Easy ImageNet use
+
+To use the ImageNet GAN model, run the following in the project's conda environment:
+
+```bash
+mkdir checkpoints
+curl -L -o checkpoints/vqgan_imagenet_f16_16384.yaml -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fconfigs%2Fmodel.yaml&dl=1'
+curl -L -o checkpoints/vqgan_imagenet_f16_16384.ckpt -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fckpts%2Flast.ckpt&dl=1'
+```
+
+
+### Using other models
+
 To use with a pretrained image generation model, configure and run the `download_models.sh` script to download your model of choice. A word of caution, these models are massive and take huge amounts of disk space, bandwith, and time to download, so choose your model(s) and download location carefully.
 
 Models can be chosen by editing this section of the `download_models.sh` script. If unchanged, the `Imagenet_16384` model will be downloaded by default.
@@ -109,3 +124,9 @@ print('Iterations: ' + args.max_iterations)
 print('Image Size: ' + args.size)
 print('Execution time in seconds: ' + str(executionTime))
 ```
+---
+## Contribution
+
+Contributions to this project are greatly appreciated, and no reasonable pull request will be denied. Even more appreciated is hardware testing changes on arm64 processors before pull requesting, which reduces the work required from the hardware team. 
+
+---
