@@ -1,0 +1,60 @@
+
+name: Running-ARM
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "stable" branch
+  push:
+    paths:
+      - 'requirements.txt'
+      - 'cog.yml'
+      - 'vqgan.yml'
+      - 'predict.py'
+      - 'generate.py'
+      - '.github/workflows/running-arm.yml'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build_job:
+    # The host should always be linux
+    runs-on: ubuntu-20.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+    # Run steps on a matrix of 3 arch/distro combinations
+    strategy:
+      matrix:
+        python: ['3.9', '3.10']
+        include:
+          - arch: aarch64
+            distro: ubuntu_latest
+          - arch: aarch64
+            distro: alpine_latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install test dependencies
+        run: python -m pip install -U tox
+      - name: Install dependancies
+        run: python -m pip install -r requirements.txt
+      - name: Clone current repository
+        run: git clone 'https://github.com/LibreCS/vqgarm'
+      - name: Change working directory
+        run: cd vqgarm
+      - name: Clone CLIP from OpenAI
+        run: git clone 'https://github.com/openai/CLIP'
+      - name: Clone taming-transformers
+        run: git clone 'https://github.com/CompVis/taming-transformers'
+      - name: Make imagenet directory
+        run: mkdir checkpoints
+      - name: Curl imagenet yaml
+        run: curl -L -o checkpoints/vqgan_imagenet_f16_16384.yaml -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fconfigs%2Fmodel.yaml&dl=1'
+      - name: Curl imagenet ckpt
+        run: curl -L -o checkpoints/vqgan_imagenet_f16_16384.ckpt -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fckpts%2Flast.ckpt&dl=1'
+      - name: Running generate test
+        run: python generate.py -cd cpu -i 300 -s 200 200 -p "A painting of a wizard riding a white horse into the sunset"
