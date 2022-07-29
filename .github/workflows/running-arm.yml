@@ -19,7 +19,7 @@ jobs:
   build_job:
     # The host should always be linux
     runs-on: ubuntu_latest
-    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }} Python ${{ matrix.python }}
 
     # Run steps on a matrix of 3 arch/distro combinations
     strategy:
@@ -27,7 +27,7 @@ jobs:
         python: ['3.9', '3.10']
         include:
           - arch: aarch64
-            distro: ubuntu_latest
+            distro: ubuntu20.04
           - arch: armv7
             distro: alpine_latest
 
