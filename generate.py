@@ -961,8 +961,8 @@ if args.make_video or args.make_zoom_video:
                        '-filter:v', f'{ffmpeg_filter}',
                        '-metadata', f'comment={args.prompts}',
                    output_file], stdin=PIPE)
-            except FileNotFoundError:
-                print("ffmpeg command failed - check your installation")
+        except FileNotFoundError:
+            print("ffmpeg command failed - check your installation")
         for im in tqdm(frames):
             im.save(p.stdin, 'PNG')
         p.stdin.close()
