@@ -25,8 +25,8 @@ jobs:
     strategy:
       matrix:
         python: ['3.9', '3.10']
-        arch: ['aarch64','armv7','armv6']
-        distro: ['ubuntu20.04','ubuntu18.04','alpine_latest']
+        arch: ['aarch64','armv7']
+        distro: ['ubuntu20.04','alpine_latest']
 
 
     steps:
