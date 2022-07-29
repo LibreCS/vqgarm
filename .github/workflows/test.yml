@@ -1,7 +1,11 @@
 
 name: Test
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - '!README.md'
+      - '.github/workflows/test.yml'
 
 jobs:
   test:
