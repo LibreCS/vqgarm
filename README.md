@@ -20,6 +20,18 @@ This project is only tested on an AMD-based x86-64 system (should not differ for
 
 The project can be installed and run normally, and for testing purposes Ubuntu 20.04 LTS will be used to provide consistancy. Installation instructions can be found in the [original project repository](https://github.com/nerdyrodent/VQGAN-CLIP)
 
+#### Quick install scripts
+```bash
+git clone https://github.com/LibreCS/vqgarm
+cd vqgarm
+python -m pip install -r requirements.txt
+git clone https://github.com/openai/CLIP
+git clone https://github.com/CompVis/taming-transformers
+mkdir checkpoints
+curl -L -o checkpoints/vqgan_imagenet_f16_16384.yaml -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fconfigs%2Fmodel.yaml&dl=1'
+curl -L -o checkpoints/vqgan_imagenet_f16_16384.ckpt -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fckpts%2Flast.ckpt&dl=1'
+```
+
 ---
 ## For arm64 Processors
 
