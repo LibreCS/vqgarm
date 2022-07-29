@@ -624,8 +624,7 @@ z_orig = z.clone()
 z.requires_grad_(True)
 
 pMs = []
-normalize = transforms.Normalize(mean=[0.48145466, 0.4578275, 0.40821073],
-                                  std=[0.26862954, 0.26130258, 0.27577711])
+normalize = transforms.Normalize(mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711])
 
 # From imagenet - Which is better?
 #normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
@@ -962,8 +961,8 @@ if args.make_video or args.make_zoom_video:
                        '-filter:v', f'{ffmpeg_filter}',
                        '-metadata', f'comment={args.prompts}',
                    output_file], stdin=PIPE)
-        except FileNotFoundError:
-            print("ffmpeg command failed - check your installation")
+            except FileNotFoundError:
+                print("ffmpeg command failed - check your installation")
         for im in tqdm(frames):
             im.save(p.stdin, 'PNG')
         p.stdin.close()
