@@ -24,7 +24,7 @@ The project can be installed and run normally, and for testing purposes Ubuntu 2
 ```bash
 git clone https://github.com/LibreCS/vqgarm
 cd vqgarm
-python -m pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 git clone https://github.com/openai/CLIP
 git clone https://github.com/CompVis/taming-transformers
 mkdir checkpoints
@@ -71,8 +71,8 @@ conda install pytorch torchvision torchaudio cpuonly -c pytorch
 
 Note: Pytorch nightly build can also be installed with these commands
 ```bash
-pip install numpy
-pip install --pre torch torchvision torchaudio -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
+python3 -m pip install numpy
+python3 -m pip install --pre torch torchvision torchaudio -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
 ```
 ---
 ## VQGAN Models
@@ -118,9 +118,9 @@ The original version of this project is intended to run on GPU CUDA cores and is
 
 For our benchmark testing, the following generate lines were used, each for each testing circumstance
 ```bash
-python generate.py -cd cpu -i 500 -s 400 400 -p "A painting of a wizard riding a white horse into the sunset"
-python generate.py -cd cpu -i 500 -s 400 400 -p "A drawing of a fiery bull fighting a white unicorn"
-python generate.py -cd cpu -i 500 -s 400 400 -p "A sketch of a yellow bird perched on a green tree"
+python3 generate.py -cd cpu -i 500 -s 400 400 -p "A painting of a wizard riding a white horse into the sunset"
+python3 generate.py -cd cpu -i 500 -s 400 400 -p "A drawing of a fiery bull fighting a white unicorn"
+python3 generate.py -cd cpu -i 500 -s 400 400 -p "A sketch of a yellow bird perched on a green tree"
 ```
 ### For VRAM Allocation Errors
 Image size is heavily dependant on avaliable VRAM, adjust the `-s 400 400` tag accordingly to accomodate avaliable hardware. Furthermore the tag `-ii /path_to/starting_image` can be used to set a starting image for VQGAN.
