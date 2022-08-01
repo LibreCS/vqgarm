@@ -1,5 +1,5 @@
 #!/bin/bash
-LOC=checkpoints
+LOC=../checkpoints
 mkdir -p "$LOC"
 
 # Which models to download?

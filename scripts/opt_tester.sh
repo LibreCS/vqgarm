@@ -3,8 +3,8 @@
 # Using each optimiser, generate images using a range of learning rates
 # Produce a labelled montage to easily view the results
 
-TEXT="A painting in the style of Paul Gauguin"
-OUT_DIR="/home/nerdy/github/VQGAN-CLIP/Saves/OptimiserTesting-60it-Noise-NPW-1"
+TEXT=""
+OUT_DIR=""
 ITERATIONS=60
 SAVE_EVERY=60
 HEIGHT=256

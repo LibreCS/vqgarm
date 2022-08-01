@@ -1,6 +1,6 @@
 absl-py>=0.13.0
 aiohttp>=3.7.4.post0
-antlr4-python3-runtime>=4.8
+antlr4-python3-runtime==4.9
 async-timeout>=3.0.1
 attrs>=21.2.0
 backcall>=0.2.0
@@ -13,7 +13,7 @@ fsspec>=2021.6.1
 ftfy>=6.0.3
 future>=0.18.2
 google-auth>=1.32.0
-google-auth-oauthlib>=0.4.4
+google-auth-oauthlib==0.4.1
 grpcio>=1.38.1
 idna>=2.10
 imageio>=2.9.0
@@ -34,7 +34,7 @@ pexpect>=4.8.0
 pickleshare>=0.7.5
 Pillow>=8.2.0
 prompt-toolkit>=3.0.19
-protobuf>=3.17.3
+protobuf==3.10
 ptyprocess>=0.7.0
 pyasn1>=0.4.8
 pyasn1-modules>=0.2.8

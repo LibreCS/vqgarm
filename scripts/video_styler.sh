@@ -3,11 +3,11 @@
 # video_styler.sh video.mp4
 
 # Style text
-TEXT="Oil painting of a woman in the foreground | pencil art landscape background"
+TEXT=""
 
 ## Input and output frame directories
-FRAMES_IN="/home/nerdy/github/VQGAN-CLIP/VideoFrames"
-FRAMES_OUT="/home/nerdy/github/VQGAN-CLIP/Saves/VideoStyleTesting"
+FRAMES_IN=""
+FRAMES_OUT=""
 
 ## Output image size
 HEIGHT=640
