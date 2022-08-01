@@ -4,6 +4,7 @@ on: [push, pull_request]
     
 jobs:
   lint:
+    name: Lint Test (flake8)
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,6 +28,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
   test:
+    name: Script Test (pytest)
     runs-on: ubuntu-latest
     strategy:
       matrix:
