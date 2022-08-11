@@ -28,7 +28,7 @@ jobs:
       uses: s-weigand/setup-conda@v1
       with:
         update-conda: true
-        activate-conda: true
+        activate-conda: false
         python-version: ${{ matrix.python }}
         conda-channels: anaconda, conda-forge
     - name: Install pytorch
