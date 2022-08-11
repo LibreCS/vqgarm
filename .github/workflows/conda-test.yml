@@ -28,12 +28,8 @@ jobs:
       uses: s-weigand/setup-conda@v1
       with:
         update-conda: true
-        activate-conda: false
+        activate-conda: true
         python-version: ${{ matrix.python }}
         conda-channels: anaconda, conda-forge
     - name: Install pytorch
       run: conda install -c kumatea pytorch numpy cpuonly
-    - name: Create conda environment
-      run: conda create --name vqgarm python=${{ matrix.python }}
-    - name: Activate conda 
-      run: conda activate vqgarm
