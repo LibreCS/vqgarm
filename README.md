@@ -4,21 +4,31 @@
 ---
 ![Run Test](https://github.com/LibreCS/vqgarm/actions/workflows/running.yml/badge.svg) ![Build Test](https://github.com/LibreCS/vqgarm/actions/workflows/test.yml/badge.svg) ![Dependancies Test](https://github.com/LibreCS/vqgarm/actions/workflows/requirements.yml/badge.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/LibreCS/vqgarm) ![GitHub](https://img.shields.io/github/license/LibreCS/vqgarm)
 ---
-A repo for running VQGAN+CLIP locally. This started out as a Katherine Crowson VQGAN+CLIP derived Google colab notebook, and further derived from a project to run the notebook locally using Anaconda for Python found [in this repository](https://github.com/nerdyrodent/VQGAN-CLIP)
+This started out as a Katherine Crowson VQGAN+CLIP derived Google notebook, and further derived from a project to run the notebook locally using Anaconda for Python found [in this repository.](https://github.com/nerdyrodent/VQGAN-CLIP)
 
-This project aims to provide compatibility for arm64-based systems and allow for testing of maching learning workloads across processor architectures.
+This project aims to provide compatibility for aarch64 (arm64) systems and allow for testing of maching learning workloads across processor architectures.
 
 ---
 ## Hardware and OS Requirements
 
-This project is only tested on an AMD-based x86-64 system (should not differ for Intel processors) and a Raspberry Pi 3B+. For simplicity, it will be tested in an arm64 docker container running on an Apple M1 Pro.
+Ubuntu 20.04 and above is suggested for this installation, but it may work with macOS and with some dependancy fixes maybe even Windows. Creating a Docker container with a persistant volume for ingressing and egressing images is best to isolate the environement. 
 
-64-bit installations of your distro of choice (only tested on Ubuntu 20.04 LTS) are required for this project to run smoothly. Due to lack of development of certain dependancies namely conda and pytorch for armhf and other 32-bit OS's, the project is limited to 64-bit systems (or not, if you are willing and able to get the problematic dependancies installed)
+This project is tested using CI actions on x86, but aarch64 testing cannot be automated and is only tested using Ubuntu Docker containers on an Apple M1 Pro. 
+
+### ARMv7 and other 32-bit systems
+
+Due to lack of development of certain dependancies namely conda and pytorch for armv7 and other 32-bit OS's, the project is limited to 64-bit systems (or not, if you are willing and able to get the problematic dependancies installed)
 
 ---
 ## For x86-64 Processors
 
-The project can be installed and run normally, and for testing purposes Ubuntu 20.04 LTS will be used to provide consistancy. Installation instructions can be found in the [original project repository](https://github.com/nerdyrodent/VQGAN-CLIP)
+The project can be installed and run normally. Installation instructions can be found in the [original project repository](https://github.com/nerdyrodent/VQGAN-CLIP) or with the quick scripts below.
+
+#### Requirements
+The system, VM, or container running the project will need basic depedancies installed with:
+```bash
+apt-get install git python3 python3-pip curl
+```
 
 #### Quick install scripts
 ```bash
@@ -32,48 +42,92 @@ curl -L -o checkpoints/vqgan_imagenet_f16_16384.yaml -C - 'https://heibox.uni-he
 curl -L -o checkpoints/vqgan_imagenet_f16_16384.ckpt -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fckpts%2Flast.ckpt&dl=1'
 ```
 
+### Generating Images
+
+Running `generate.py` will generate images, with tags controlling parameters.
+
+- `-cd cpu` forces pytorch to use the CPU for generation (for our testing)
+- `-i` controls the number of iterations of the GAN-CLIP system
+- `-s` controls the resolution of the image in pixels
+- `-p` controls the input phrase to be generated
+- `-ii` specifies the path to the starting image (optional)
+
+For example:
+```bash
+python3 generate.py -cd cpu -i 500 -s 400 400 -p "A painting of a wizard riding a white horse into the sunset"
+```
+
 ---
 ## For arm64 Processors
 
-Ubuntu 20.04 or 22.04 for arm64 is recommended to provide maximum compatibility, and testing for arm64 compatibility will only be done with the Raspberry Pi model 3B+. 
-
-This project's CI testing schema also tests for Windows 10 and macOS compatibility, so they are also theoretically functional.
+Ubuntu for aarch64 is recommended for maxiumum compatibility, and lack of CI support for arm64 means this project will only be tested in an Ubuntu 20.04 aarch64 docker container. This project's CI testing schema also tests for Windows 10 and macOS compatibility, so they are also theoretically functional.
 
 ### Anaconda for arm64
 
-To install conda for arm64, download the installer from the [Anaconda Docs](https://docs.anaconda.com/anaconda/install/linux-aarch64/)
-Run the installer script using (change the command based on the `Anaconda3-202X.XX-Linux-aarch64.sh` file)
+To install conda for arm64, download the installer from the [Anaconda Docs.](https://docs.anaconda.com/anaconda/install/linux-aarch64/)
+Run the installer script using:
 ```bash
-bash ~/Anaconda3-2021.04-Linux-aarch64.sh
+bash /PATH/TO/Anaconda3-2021.04-Linux-aarch64.sh
+# Replace that path and filename with the downloaded script name
 ```
-Have the changes take effect with 
+Have the changes take effect with:
 ```bash
 source ~/.bashrc
 ```
 
-VQGAN is built for Python 3.9, to install in the conda environment run 
+VQGAN is built for Python 3.9, to install in the conda environment run:
 ```bash
-conda install python=3.9
+conda create --name vqgarm python=3.9
+conda acvtivate vqgarm
 ```
 
-#### For Legacy Systems
-
-Miniconda has wider compatibility for legacy systems, installation instructions can be found [in this thread](https://stackoverflow.com/questions/39371772/how-to-install-anaconda-on-raspberry-pi-3-model-b)
 
 ### Pytorch for arm64
 
 Pytorch is also required, and installation instructions for arm systems can be found [on this page](http://mathinf.com/pytorch/arm64/)
 
-To install pytorch stable using conda for cpu-only processing
+To install pytorch for arm64 [kumatea pytorch-aarch64](https://github.com/KumaTea/pytorch-aarch64):
 ```bash
-conda install pytorch torchvision torchaudio cpuonly -c pytorch
+conda install -c kumatea pytorch cpuonly
+```
+Alternatively, if numpy also needs to be installed for conda:
+```bash
+conda install kumatea pytorch numpy cpuonly
 ```
 
-Note: Pytorch nightly build can also be installed with these commands
+### Installation
+
+Clone required repositories (using `git`):
 ```bash
-python3 -m pip install numpy
-python3 -m pip install --pre torch torchvision torchaudio -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
+git clone https://github.com/LibreCS/vqgarm
+cd vqgarm
+git clone 'https://github.com/openai/CLIP'
+git clone 'https://github.com/CompVis/taming-transformers'
 ```
+
+#### Quick ImageNet GAN Model Installation
+See the section below on VQGAN models for installation instructions for different models, but these quick scripts install the ImageNet_16384 model:
+```bash
+mkdir checkpoints
+curl -L -o checkpoints/vqgan_imagenet_f16_16384.yaml -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fconfigs%2Fmodel.yaml&dl=1'
+curl -L -o checkpoints/vqgan_imagenet_f16_16384.ckpt -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fckpts%2Flast.ckpt&dl=1'
+```
+
+### Generating Images
+
+Running `generate.py` will generate images, with tags controlling parameters.
+
+- `-cd cpu` forces pytorch to use the CPU for generation (for our testing)
+- `-i` controls the number of iterations of the GAN-CLIP system
+- `-s` controls the resolution of the image in pixels
+- `-p` controls the input phrase to be generated
+- `-ii` specifies the path to the starting image (optional)
+
+For example:
+```bash
+python3 generate.py -cd cpu -i 500 -s 400 400 -p "A painting of a wizard riding a white horse into the sunset"
+```
+
 ---
 ## VQGAN Models
 
@@ -90,7 +144,7 @@ curl -L -o checkpoints/vqgan_imagenet_f16_16384.ckpt -C - 'https://heibox.uni-he
 
 ### Using other models
 
-To use with a pretrained image generation model, configure and run the `download_models.sh` script to download your model of choice. A word of caution, these models are massive and take huge amounts of disk space, bandwith, and time to download, so choose your model(s) and download location carefully.
+To use with a pretrained image generation model, configure and run the `download_models.sh` script to download your model of choice. 
 
 Models can be chosen by editing this section of the `download_models.sh` script. If unchanged, the `Imagenet_16384` model will be downloaded by default.
 ```shell
@@ -114,7 +168,7 @@ As of now, custom model generation is only compatible with the CUDA version of P
 ## Notes for Testing
 
 ### Test Execution
-The original version of this project is intended to run on GPU CUDA cores and is more efficient in such configuration. To force CPU use, add tag `-cd cpu` in the execution of `generate.py`
+The original version of this project is intended to run on Nvidia CUDA cores cores and is more efficient in such configuration. To force CPU use, add tag `-cd cpu` in the execution of `generate.py`
 
 For our benchmark testing, the following generate lines were used, each for each testing circumstance
 ```bash
