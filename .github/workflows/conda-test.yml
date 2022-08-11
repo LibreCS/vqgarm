@@ -36,4 +36,4 @@ jobs:
     - name: Create conda environment
       run: conda create --name vqgarm python=${{ matrix.python }}
     - name: Activate conda 
-      run: conda acvtivate vqgarm
+      run: conda activate vqgarm
