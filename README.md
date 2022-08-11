@@ -1,4 +1,4 @@
-# vqgarm - VQGAN+CLIP for Process Architecture Testing
+# vqgarm - VQGAN+CLIP for aarch64 testing
 
 ![Example Image](https://korii.slate.fr/sites/default/files/styles/1440x600/public/champdechienselectriques.jpg)
 ---
