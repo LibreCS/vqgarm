@@ -11,10 +11,11 @@ on:
       - 'predict.py'
       - 'generate.py'
       - '.github/workflows/conda-run.yml'
+      - '.github/workflows/conda-test.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-          
+         
 jobs:
   test:
     strategy:
@@ -28,14 +29,11 @@ jobs:
       uses: s-weigand/setup-conda@v1
       with:
         update-conda: true
+        activate-conda: true
         python-version: ${{ matrix.python }}
         conda-channels: anaconda, conda-forge
     - name: Install pytorch
       run: conda install -c kumatea pytorch numpy cpuonly
-    - name: Create conda environment
-      run: conda create --name vqgarm python=${{ matrix.python }}
-    - name: Activate conda 
-      run: conda acvtivate vqgarm
     - name: Install dependancies
       run: python -m pip install -r requirements.txt
     - name: Clone current repository
@@ -54,3 +52,4 @@ jobs:
       run: curl -L -o checkpoints/vqgan_imagenet_f16_16384.ckpt -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fckpts%2Flast.ckpt&dl=1'
     - name: Running generate test
       run: python generate.py -cd cpu -i 300 -s 200 200 -p "A painting of a wizard riding a white horse into the sunset"
+      
