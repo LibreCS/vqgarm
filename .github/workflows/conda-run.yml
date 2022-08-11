@@ -10,7 +10,7 @@ on:
       - 'vqgan.yml'
       - 'predict.py'
       - 'generate.py'
-      - '.github/workflows/running.yml'
+      - '.github/workflows/conda-run.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -31,7 +31,7 @@ jobs:
         python-version: ${{ matrix.python }}
         conda-channels: anaconda, conda-forge
     - name: Install pytorch
-      run: conda install kumatea pytorch numpy cpuonly
+      run: conda install -c kumatea pytorch numpy cpuonly
     - name: Create conda environment
       run: conda create --name vqgarm python=${{ matrix.python }}
     - name: Activate conda 
