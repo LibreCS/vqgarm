@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         python: ['3.9', '3.10']
-        platform: [ubuntu-latest]
+        platform: [ubuntu-22.04, ubuntu-20.04, ubuntu-18.04]
     runs-on: ${{ matrix.platform }}
     steps:
     - uses: actions/checkout@v2
