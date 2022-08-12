@@ -1,0 +1,55 @@
+
+name: Large Image aarch64 Test
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "stable" branch
+  push:
+    paths:
+      - 'requirements.txt'
+      - 'cog.yml'
+      - 'vqgan.yml'
+      - 'predict.py'
+      - 'generate.py'
+      - '.github/workflows/conda-run.yml'
+      - '.github/workflows/conda-test.yml'
+      - '.github/workflows/large-arm.yml'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+         
+jobs:
+  test:
+    strategy:
+      matrix:
+        python: ['3.9', '3.10']
+        platform: [ubuntu-22.04, ubuntu-20.04, ubuntu-18.04]
+    runs-on: ${{ matrix.platform }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup conda
+      uses: s-weigand/setup-conda@v1
+      with:
+        update-conda: true
+        activate-conda: true
+        python-version: ${{ matrix.python }}
+        conda-channels: anaconda, conda-forge
+    - name: Install pytorch
+      run: conda install -c kumatea pytorch numpy cpuonly
+    - name: Install dependancies
+      run: python -m pip install -r requirements.txt
+    - name: Clone current repository
+      run: git clone 'https://github.com/LibreCS/vqgarm'
+    - name: Change working directory
+      run: cd vqgarm
+    - name: Clone CLIP from OpenAI
+      run: git clone 'https://github.com/openai/CLIP'
+    - name: Clone taming-transformers
+      run: git clone 'https://github.com/CompVis/taming-transformers'
+    - name: Make imagenet directory
+      run: mkdir checkpoints
+    - name: Curl imagenet yaml
+      run: curl -L -o checkpoints/vqgan_imagenet_f16_16384.yaml -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fconfigs%2Fmodel.yaml&dl=1'
+    - name: Curl imagenet ckpt
+      run: curl -L -o checkpoints/vqgan_imagenet_f16_16384.ckpt -C - 'https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fckpts%2Flast.ckpt&dl=1'
+    - name: Running generate test
+      run: python generate.py -cd cpu -i 500 -s 1920 1080 -p "Red apple in water"
