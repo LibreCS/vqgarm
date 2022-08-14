@@ -92,7 +92,7 @@ conda install -c kumatea pytorch cpuonly
 ```
 Alternatively, if numpy also needs to be installed for conda:
 ```bash
-conda install kumatea pytorch numpy cpuonly
+conda install -c kumatea pytorch numpy cpuonly
 ```
 
 ### Installation
